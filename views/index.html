@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{.PageName}}</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="./img/favicon_16.ico"/>
+    <link rel="bookmark" href="./img/favicon_16.ico"/>
+    <!-- site css -->
+    <link rel="stylesheet" href="./css/site.min.css">
+    <link rel="stylesheet" href="./css/site.fonts.css" type="text/css">
+    <style>
+          .cadminerr{
+            color: #3BAFDA;
+          }
+    </style>
+    {{ if or (eq .PageName "Login") (eq .PageName "Signup") }}
+      <style>
+          body {
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #303641;
+            color: #C1C3C6
+          }
+          .etc-login-form {
+            padding: 10px 20px;
+          }
+
+          .err{
+            color: #DC3023;
+          }
+        </style>
+    {{ end }}
+    
+  </head>
+<body>
+	<div id="app">
+	</div>
+</body>
+</html>
+<script type="text/javascript">
+  var pageName = {{.PageName}}
+  var Base ={};
+  Object.defineProperty(Base, 'Url', {
+      value: 'http://localhost:8086/',
+      writable: false
+  });
+
+  {{ if and (ne .PageName "Login") (ne .PageName "Signup") }}
+
+    var Login = {}; // Creates a new object
+    Object.defineProperty(Login, 'Id', {
+        value: {{.LoginId}},
+        writable: false
+    });
+    Object.defineProperty(Login, 'Jadmin', {
+        value: {{.Jadmin}},
+        writable: false
+    });
+
+  {{end}}
+</script>
+<script type="text/javascript" src="./js/site.min.js"></script>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script src="./js/bundle.js" ></script>
