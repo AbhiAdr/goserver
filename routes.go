@@ -1,7 +1,7 @@
 package main
 
 import (
-	"API/handlers"
+	"goserver/handlers"
 )
 
 var routes = Routes{
@@ -42,15 +42,9 @@ var routes = Routes{
 		handlers.Dashbord,
 	},
 	Route{
-		"Addcadmin",
+		"Users",
 		"POST",
-		"/Addcadmin",
-		handlers.Addcadmin,
-	},
-	Route{
-		"Showcadmin",
-		"POST",
-		"/Showcadmin",
-		handlers.Showcadmin,
+		"/Users",
+		handlers.Users,
 	},
 }

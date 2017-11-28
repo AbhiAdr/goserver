@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"API/models"
 	"encoding/json"
 	"fmt"
+	"goserver/models"
 	"net/http"
 )
 

@@ -1,9 +1,8 @@
 package models
 
 import (
-	"API/structs"
-	"fmt"
 	"golang.org/x/crypto/bcrypt"
+	"goserver/structs"
 )
 
 func Singup_error() structs.Signup_err {
@@ -28,9 +27,6 @@ func Singup_chk(email string) int {
 		err = rows.Scan(&id)
 		checkErr(err)
 
-		fmt.Println("active status of the user user is active or not")
-		fmt.Println(id)
-
 		data = id
 	}
 	return data
@@ -54,7 +50,7 @@ func Singup(fn string, ln string, email string, pwd string) structs.Signup {
 	id, err := res.LastInsertId()
 	checkErr(err)
 
-	data = structs.Signup{"S", structs.UserDetails{id, fn, ln, email, password, 0}, id}
+	data = structs.Signup{"S", structs.UserDetails{id, fn, ln, email, password, 1}, id}
 
 	return data
 }

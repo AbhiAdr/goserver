@@ -1,8 +1,8 @@
 package models
 
 import (
-	"API/structs"
 	"fmt"
+	"goserver/structs"
 )
 
 func Login_err() structs.Login_err {
@@ -15,7 +15,7 @@ func Login(email string) structs.Login {
 
 	var data structs.Login
 
-	stmt, err := db.Prepare("SELECT id, fn, ln, email, password, jadmin FROM users where email= ?")
+	stmt, err := db.Prepare("SELECT id, fn, ln, email, password, login_status FROM users where email= ?")
 	checkErr(err)
 	defer stmt.Close()
 
@@ -24,13 +24,13 @@ func Login(email string) structs.Login {
 	defer rows.Close()
 
 	for rows.Next() {
-		var id, jadmin int64
+		var id, login_status int64
 		var fn, ln, email, password string
 
-		err = rows.Scan(&id, &fn, &ln, &email, &password, &jadmin)
+		err = rows.Scan(&id, &fn, &ln, &email, &password, &login_status)
 		checkErr(err)
 
-		data = structs.Login{"S", structs.UserDetails{id, fn, ln, email, password, jadmin}, id}
+		data = structs.Login{"S", structs.UserDetails{id, fn, ln, email, password, login_status}, id}
 		UpdateUserLoginStatus(id)
 	}
 
@@ -53,7 +53,7 @@ func LoginDashbord(id int64) structs.UserDetails {
 
 	var data structs.UserDetails
 
-	stmt, err := db.Prepare("SELECT id, fn, ln, email, password, jadmin FROM users where id= ?")
+	stmt, err := db.Prepare("SELECT id, fn, ln, email, password, login_status FROM users where id= ?")
 	checkErr(err)
 	defer stmt.Close()
 
@@ -62,13 +62,33 @@ func LoginDashbord(id int64) structs.UserDetails {
 	defer rows.Close()
 
 	for rows.Next() {
-		var id, jadmin int64
+		var id, login_status int64
 		var fn, ln, email, password string
 
-		err = rows.Scan(&id, &fn, &ln, &email, &password, &jadmin)
+		err = rows.Scan(&id, &fn, &ln, &email, &password, &login_status)
 		checkErr(err)
 
-		data = structs.UserDetails{id, fn, ln, email, password, jadmin}
+		data = structs.UserDetails{id, fn, ln, email, password, login_status}
+	}
+
+	return data
+}
+
+func ShowUsers() structs.ShowUserDetails {
+
+	var data structs.ShowUserDetails
+
+	rows, err := db.Query("SELECT id, fn, ln, email, password, login_status FROM users LIMIT 10")
+	checkErr(err)
+
+	for rows.Next() {
+		var id, login_status int64
+		var fn, ln, email, password string
+
+		err = rows.Scan(&id, &fn, &ln, &email, &password, &login_status)
+		checkErr(err)
+
+		data = append(data, structs.UserDetails{id, fn, ln, email, password, login_status})
 	}
 
 	return data

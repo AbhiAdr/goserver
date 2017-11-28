@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"API/models"
-	"API/structs"
 	"encoding/json"
+	"goserver/models"
+	"goserver/structs"
 	"net/http"
 )
 
@@ -15,7 +15,7 @@ func Signup_page(w http.ResponseWriter, r *http.Request) {
 
 		if err = s.Decode("id", cookie.Value, &value); err == nil {
 
-			d := structs.IndexData{"Index", value["id"], value["jadmin"]}
+			d := structs.IndexData{"Index", value["id"], value["login_status"]}
 			tpl.ExecuteTemplate(w, "index.html", d)
 		}
 
@@ -49,8 +49,8 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		response := models.Singup(fn, ln, email, pwd)
 
 		value := map[string]int64{
-			"id":     response.Login_id,
-			"jadmin": response.Data.Jadmin,
+			"id":           response.Login_id,
+			"login_status": response.Data.Login_status,
 		}
 
 		if encoded, err := s.Encode("id", value); err == nil {

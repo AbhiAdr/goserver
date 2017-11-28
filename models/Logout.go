@@ -1,8 +1,8 @@
 package models
 
 import (
-	"API/structs"
 	"fmt"
+	"goserver/structs"
 )
 
 func Logout(id int64) structs.Logout {

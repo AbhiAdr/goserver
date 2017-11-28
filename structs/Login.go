@@ -1,14 +1,5 @@
 package structs
 
-type UserDetails struct {
-	Id     int64  `json:"id"`
-	Fn     string `json:"fn"`
-	Ln     string `json:"ln"`
-	Email  string `json:"email"`
-	Pwd    string `json:"pwd"`
-	Jadmin int64  `json:"jadmin"`
-}
-
 type Login struct {
 	Status   string      `json:"status"`
 	Data     UserDetails `json:"data"`

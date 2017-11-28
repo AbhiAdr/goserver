@@ -1,8 +1,8 @@
 package main
 
 import (
-	"API/handlers"
-	"API/models"
+	"goserver/handlers"
+	"goserver/models"
 	"log"
 	"net/http"
 )
