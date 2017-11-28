@@ -8,7 +8,7 @@ This repository contains a collection of Go programs and libraries that demonstr
 
 ## Prerequisites
 
-- Install Golang : Please follow [Setup.md](./Steup.md) to install golang and standard setup while working with go.
+- Install Golang : Please follow [Setup.md](./Setup.md) to install golang and standard setup while working with go.
 - Mysql : Please find SQL scema file in repository 
 
 ### Packages
@@ -30,7 +30,7 @@ Secure cookies can't be forged, because their values are validated using HMAC. W
 
 ## start the project 
 
-Please follow [Setup.md](./Steup.md) to install golang and standard setup while working with go.
+Please follow [Setup.md](./Setup.md) to install golang and standard setup while working with go.
 ```sh
 cd src
 git clone https://github.com/AbhiAdr/goserver.git
