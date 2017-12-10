@@ -2,9 +2,9 @@
 
 `goserver: A light waight Web Server`
 
-This repository contains a collection of Go programs and libraries that demonstrate how we can use go lang as webserver or APIserver
+This repository contains a collection of Go programs and libraries that demonstrate how we can use go lang as webserver or APIserver 
 
-> We have include login and signup functionality within this project 
+> We have include login and signup functionality within this project , Your comments and suggestions are welcome.
 
 ## Prerequisites
 
