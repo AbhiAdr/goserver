@@ -3,20 +3,18 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"goserver/models"
+	"go_mjolnir/models"
 	"net/http"
 )
 
 func Logout(w http.ResponseWriter, r *http.Request) {
-
+	fmt.Println("POST : Logout: ")
 	if cookie, err := r.Cookie("id"); err == nil {
-
-		value := make(map[string]int64)
-
+		fmt.Println(cookie.Value)
+		value := make(map[string]string)
 		if err = s.Decode("id", cookie.Value, &value); err == nil {
-
 			data := models.Logout(value["id"])
-
+			fmt.Println("update the login_status 0 -> send response")
 			cookie := &http.Cookie{
 				Name:   "id",
 				Value:  "",
@@ -31,6 +29,8 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 			if err := json.NewEncoder(w).Encode(data); err != nil {
 				panic(err)
 			}
+		} else {
+			fmt.Println(err)
 		}
 
 	} else {

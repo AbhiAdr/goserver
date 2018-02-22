@@ -2,16 +2,17 @@ package handlers
 
 import (
 	"encoding/json"
-	"goserver/models"
-	"goserver/structs"
 	"net/http"
+
+	"go_mjolnir/models"
+	"go_mjolnir/structs"
 )
 
 func Signup_page(w http.ResponseWriter, r *http.Request) {
 
 	if cookie, err := r.Cookie("id"); err == nil {
 
-		value := make(map[string]int64)
+		value := make(map[string]string)
 
 		if err = s.Decode("id", cookie.Value, &value); err == nil {
 

@@ -1,16 +1,17 @@
 package main
 
 import (
-	"goserver/handlers"
-	"goserver/models"
+	"go_mjolnir/handlers"
+	"go_mjolnir/models"
 	"log"
 	"net/http"
 )
 
 func main() {
+
 	router := NewRouter()
-	// Init Db And Secure Cookies
-	models.InitDB("root:root@/project?charset=utf8")
+	// Init Db , Secure Cookies and License
+	models.InitDB("devopsdb:6bCDn.nx@tcp(gomjolnir-dev.cepqlfnboyp8.us-west-2.rds.amazonaws.com:3306)/mjolnir_dev?charset=utf8")
 	handlers.SecureCookies()
 	// Set Static Files Path
 	js := http.StripPrefix("/js/", http.FileServer(http.Dir("./public/js/")))

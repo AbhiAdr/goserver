@@ -2,14 +2,15 @@ package models
 
 import (
 	"fmt"
-	"goserver/structs"
+
+	"go_mjolnir/structs"
 )
 
-func Logout(id int64) structs.Logout {
+func Logout(id string) structs.Logout {
 
 	var data structs.Logout
 
-	stmt, err := db.Prepare("UPDATE users SET login_status = ? WHERE id = ?")
+	stmt, err := db.Prepare("UPDATE tbl_users SET login_status = ? WHERE id = ?")
 	checkErr(err)
 
 	res, err := stmt.Exec(0, id)

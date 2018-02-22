@@ -1,8 +1,8 @@
 package models
 
 import (
+	"go_mjolnir/structs"
 	"golang.org/x/crypto/bcrypt"
-	"goserver/structs"
 )
 
 func Singup_error() structs.Signup_err {

@@ -2,47 +2,69 @@ package handlers
 
 import (
 	"encoding/json"
-	"golang.org/x/crypto/bcrypt"
-	"goserver/models"
-	"goserver/structs"
+	"fmt"
 	"net/http"
+
+	"go_mjolnir/models"
+	"go_mjolnir/structs"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func Login_page(w http.ResponseWriter, r *http.Request) {
-
+	fmt.Println("\n")
+	fmt.Println("Login -> Page, Checking for (login=true) dashbord ? login based on cookie value")
 	//	check if user is logged in or Not
 	if cookie, err := r.Cookie("id"); err == nil {
-		value := make(map[string]int64)
+		value := make(map[string]string)
 		if err = s.Decode("id", cookie.Value, &value); err == nil {
 			// passing values to page > Check respective struct in ../structs/index_page.go
 			d := structs.IndexData{"Index", value["id"], value["login_status"]}
+			fmt.Println("Login Page -> Cookie Found -> Dashbord")
+			fmt.Println(d)
 			tpl.ExecuteTemplate(w, "index.html", d)
 		}
 	} else {
-		// passing the page name while rendering > Check respective struct in ../structs/index_page.go
-		d := structs.Data{"Login"}
-		w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
-		w.Header().Set("Pragma", "no-cache")
-		w.Header().Set("Expires", "0")
-		tpl.ExecuteTemplate(w, "index.html", d)
+		License()
+		fmt.Println("Login Page -> Cookie not Found not login")
+		if licenseExist == 0 {
+			fmt.Println("Login Page -> Cookie not Found  -> licence not found -> Dbconfig Page")
+			d := structs.Data{"Dbconfig"} //	Dbconfig Page
+			w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+			w.Header().Set("Pragma", "no-cache")
+			w.Header().Set("Expires", "0")
+			tpl.ExecuteTemplate(w, "index.html", d)
+		} else {
+			fmt.Println("Login Page -> Cookie not Found -> licence found -> Login Page")
+			d := structs.Data{"Login"} //	Login Page
+			w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+			w.Header().Set("Pragma", "no-cache")
+			w.Header().Set("Expires", "0")
+			tpl.ExecuteTemplate(w, "index.html", d)
+		}
 	}
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
 
 	var chk_st int
-
+	var user structs.User
 	r.ParseForm()
-	email := r.FormValue("email")
+	fmt.Println("POST : LOGIN : Form Value")
+	fmt.Println(r.Form)
+	user.Email = r.FormValue("email")
 	pwd := r.FormValue("pwd")
-
-	data := models.Login(email)
+	//data := models.Login(email)
+	data, _ := models.User_get_by_username(user)
 	pwdfromDb := []byte(data.Data.Pwd)
+	fmt.Println("Featch user details based on input :")
+	fmt.Println(data)
 
 	if err := bcrypt.CompareHashAndPassword(pwdfromDb, []byte(pwd)); err != nil {
-
 		chk_st = 1
 	}
+
+	fmt.Println("CompareHashAndPassword 0 indicates password matches")
+	fmt.Println(chk_st)
 
 	if chk_st == 1 {
 
@@ -54,8 +76,9 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 
-		value := map[string]int64{
-			"id":           data.Login_id,
+		fmt.Println("Successful login create encryped cookies")
+		value := map[string]string{
+			"id":           data.Data.Id,
 			"login_status": data.Data.Login_status,
 		}
 
@@ -73,34 +96,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		if err := json.NewEncoder(w).Encode(data); err != nil {
 			panic(err)
-		}
-	}
-}
-
-func Dashbord(w http.ResponseWriter, r *http.Request) {
-	if cookie, err := r.Cookie("id"); err == nil {
-		value := make(map[string]int64)
-		if err = s.Decode("id", cookie.Value, &value); err == nil {
-			data := models.LoginDashbord(value["id"])
-			w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-			w.WriteHeader(http.StatusOK)
-			if err := json.NewEncoder(w).Encode(data); err != nil {
-				panic(err)
-			}
-		}
-	}
-}
-
-func Users(w http.ResponseWriter, r *http.Request) {
-	if cookie, err := r.Cookie("id"); err == nil {
-		value := make(map[string]int64)
-		if err = s.Decode("id", cookie.Value, &value); err == nil {
-			data := models.ShowUsers()
-			w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-			w.WriteHeader(http.StatusOK)
-			if err := json.NewEncoder(w).Encode(data); err != nil {
-				panic(err)
-			}
 		}
 	}
 }

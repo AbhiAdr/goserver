@@ -1,0 +1,17 @@
+version: '3.3'
+services:
+  mjolnir:
+    build:
+      context: $GOPATH
+      dockerfile: ./src/go_mjolnir/docker/docker_mjolnir/Dockerfile
+    container_name: docker_mjolnir
+    restart: always
+    env_file: ./.env
+    volumes:
+     - mjolnir-data:/usr/local/bin/
+    ports:
+     - "8086:8086"
+    tty: true
+
+volumes:
+  mjolnir-data:

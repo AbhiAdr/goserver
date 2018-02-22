@@ -1,12 +1,9 @@
 package main
 
-import "net/http"
+import (
+	"go_mjolnir/routes/get"
+	"go_mjolnir/routes/post"
+)
 
-type Route struct {
-	Name        string
-	Method      string
-	Pattern     string
-	HandlerFunc http.HandlerFunc
-}
-
-type Routes []Route
+type GRoutes []get.Route
+type PRoutes []post.Route

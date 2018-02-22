@@ -1,8 +1,9 @@
 package models
 
 import (
+	"errors"
 	"fmt"
-	"goserver/structs"
+	"go_mjolnir/structs"
 )
 
 func Login_err() structs.Login_err {
@@ -11,11 +12,39 @@ func Login_err() structs.Login_err {
 	return data
 }
 
+func User_get_by_username(data structs.User) (structs.Login, error) {
+	var user structs.Login
+	stmt, err := db.Prepare("SELECT id, firstname, lastname, email, password, login_status FROM tbl_users where email= ?")
+	checkErr(err)
+	defer stmt.Close()
+
+	rows, err := stmt.Query(data.Email)
+	checkErr(err)
+	defer rows.Close()
+
+	for rows.Next() {
+
+		err = rows.Scan(&data.Id, &data.Firstname, &data.Lastname, &data.Email, &data.Pwd, &data.Login_status)
+
+		checkErr(err)
+		UpdateUserLoginStatus(data)
+		user = structs.Login{"S", data, data.Id}
+		//data = structs.Login{Status: "S", Data: data, Login_id: data.Id}
+	}
+
+	if err != nil {
+		return user, errors.New("Unable to Login")
+	}
+	return user, nil
+
+}
+
+/*
 func Login(email string) structs.Login {
 
 	var data structs.Login
 
-	stmt, err := db.Prepare("SELECT id, fn, ln, email, password, login_status FROM users where email= ?")
+	stmt, err := db.Prepare("SELECT id, firstname, lastname, email, password, login_status FROM tbl_users where email= ?")
 	checkErr(err)
 	defer stmt.Close()
 
@@ -36,60 +65,17 @@ func Login(email string) structs.Login {
 
 	return data
 }
+*/
+func UpdateUserLoginStatus(data structs.User) {
 
-func UpdateUserLoginStatus(id int64) {
+	data.Login_status = "1"
 
-	stmt, err := db.Prepare("UPDATE users SET login_status = ? WHERE id = ?")
+	stmt, err := db.Prepare("UPDATE tbl_users SET login_status = ? WHERE id = ?")
 	checkErr(err)
 
-	res, err := stmt.Exec(1, id)
+	res, err := stmt.Exec(data.Login_status, data.Id)
 	checkErr(err)
 
+	fmt.Println("User Login Status updated : ")
 	fmt.Println(res)
-
-}
-
-func LoginDashbord(id int64) structs.UserDetails {
-
-	var data structs.UserDetails
-
-	stmt, err := db.Prepare("SELECT id, fn, ln, email, password, login_status FROM users where id= ?")
-	checkErr(err)
-	defer stmt.Close()
-
-	rows, err := stmt.Query(id)
-	checkErr(err)
-	defer rows.Close()
-
-	for rows.Next() {
-		var id, login_status int64
-		var fn, ln, email, password string
-
-		err = rows.Scan(&id, &fn, &ln, &email, &password, &login_status)
-		checkErr(err)
-
-		data = structs.UserDetails{id, fn, ln, email, password, login_status}
-	}
-
-	return data
-}
-
-func ShowUsers() structs.ShowUserDetails {
-
-	var data structs.ShowUserDetails
-
-	rows, err := db.Query("SELECT id, fn, ln, email, password, login_status FROM users LIMIT 10")
-	checkErr(err)
-
-	for rows.Next() {
-		var id, login_status int64
-		var fn, ln, email, password string
-
-		err = rows.Scan(&id, &fn, &ln, &email, &password, &login_status)
-		checkErr(err)
-
-		data = append(data, structs.UserDetails{id, fn, ln, email, password, login_status})
-	}
-
-	return data
 }

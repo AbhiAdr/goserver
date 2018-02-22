@@ -14,11 +14,9 @@
             color: #3BAFDA;
           }
     </style>
-    {{ if or (eq .PageName "Login") (eq .PageName "Signup") }}
+    {{ if or (eq .PageName "Login") (eq .PageName "Signup") (eq .PageName "Dbconfig") }}
       <style>
           body {
-            padding-top: 40px;
-            padding-bottom: 40px;
             background-color: #303641;
             color: #C1C3C6
           }
@@ -29,13 +27,36 @@
           .err{
             color: #DC3023;
           }
+
+          .berr{
+            border-color: #DC3023;
+          }
+
+          #lighting {
+            position: absolute;
+          }
+
+          #app {
+            padding-top: 40px;
+            padding-bottom: 40px;
+          }
+
+          input ,button {
+            position: relative;
+          }
+
+          .custom_pad {
+            padding-top: 5%;
+          }
         </style>
     {{ end }}
     
   </head>
 <body>
-	<div id="app">
-	</div>
+    {{ if or (eq .PageName "Login") (eq .PageName "Signup") (eq .PageName "Dbconfig") }}
+        <canvas id="lighting"></canvas>
+    {{ end }}
+  <div id="app"></div>
 </body>
 </html>
 <script type="text/javascript">
@@ -46,7 +67,7 @@
       writable: false
   });
 
-  {{ if and (ne .PageName "Login") (ne .PageName "Signup") }}
+  {{ if and (ne .PageName "Login") (ne .PageName "Signup") (ne .PageName "Dbconfig") }}
 
     var Login = {}; // Creates a new object
     Object.defineProperty(Login, 'Id', {
@@ -62,3 +83,6 @@
 <script type="text/javascript" src="./js/site.min.js"></script>
 <script type="text/javascript" src="./js/jquery.min.js"></script>
 <script src="./js/bundle.js" ></script>
+{{ if or (eq .PageName "Login") (eq .PageName "Signup") (eq .PageName "Dbconfig") }}
+    <script src="./js/lighting.lib.js" ></script>
+{{end}}

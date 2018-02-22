@@ -36,7 +36,7 @@ class Nav extends React.Component {
 		              <span className="icon-bar"></span>
 		              <span className="icon-bar"></span>
 		            </button>
-		            <a href="#" className="navbar-brand">Go-Web</a>
+		            <a href="#" className="navbar-brand">Mjolnir</a>
 		          </div>
 
 		          <div id="bs-content-row-navbar-collapse-5" className="collapse navbar-collapse">

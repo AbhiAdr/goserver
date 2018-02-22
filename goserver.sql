@@ -1,58 +1,103 @@
-CREATE DATABASE  IF NOT EXISTS `project` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `project`;
--- MySQL dump 10.13  Distrib 5.7.20, for Linux (x86_64)
---
--- Host: localhost    Database: project
--- ------------------------------------------------------
--- Server version	5.7.20-0ubuntu0.16.04.1
+SET SQL_SAFE_UPDATES = 0;
+DELETE FROM  tbl_testplan WHERE lg_count = 1;
+SET SQL_SAFE_UPDATES = 1;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
---
--- Table structure for table `users`
---
 
-DROP TABLE IF EXISTS `users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'PK for user table',
-  `fn` varchar(32) DEFAULT NULL COMMENT 'first name',
-  `ln` varchar(32) DEFAULT NULL COMMENT 'last name',
-  `email` varchar(48) DEFAULT NULL COMMENT 'email',
-  `password` varchar(128) DEFAULT NULL,
-  `active` tinyint(1) DEFAULT NULL COMMENT 'user is active or not ',
-  `login_status` tinyint(1) DEFAULT NULL COMMENT 'user is loged in or not',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE DATABASE  IF NOT EXISTS mjolnir_dev;
 
---
--- Dumping data for table `users`
---
+USE mjolnir_dev;
 
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Abhi','Ranpura','adrabhi@gmail.com','$2a$10$hSAcnu3KP3La6UswS3UTUePXZdW0Rza/vi4QZKyzcT5w51.kqw.tC',1,0),(2,'Boom','!!!','boom@gmail.com','$2a$10$LFlNawOdounVuMKyXfti8.iYSbZAXgE/j5M/yMCPpyDj.kpF2LEci',1,0);
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+DROP TABLE IF EXISTS users;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+CREATE TABLE users (
+  id varchar(32) NOT NULL ,
+  firstname varchar(32) DEFAULT NULL ,
+  lastname varchar(32) DEFAULT NULL ,
+  email varchar(48) DEFAULT NULL ,
+  password varchar(128) DEFAULT NULL,
+  active tinyint(1) DEFAULT NULL ,
+  login_status tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (email)
+) ENGINE=InnoDB
 
--- Dump completed on 2017-11-29  4:13:51
+
+INSERT INTO users VALUES ('USER-UUID-01','Admin','Admin','admin@abc.com','$2a$10$.oh/PgGqIvu0iSj6EjxjT./Rug36HQsGLTHZLy51.Kp9TQ75kl1W2',1,0);
+
+
+DROP TABLE IF EXISTS tbl_team;
+CREATE TABLE tbl_team (
+  id varchar(32) NOT NULL ,
+  name varchar(32)  NOT NULL ,
+  PRIMARY KEY (name)
+) ENGINE=InnoDB;
+
+INSERT INTO tbl_team VALUES ('TEAM-UUID-01','HMOF'),('TEAM-UUID-02','TC');
+
+
+DROP TABLE IF EXISTS tbl_users_team;
+CREATE TABLE tbl_users_team (
+  users_id varchar(32) NOT NULL ,
+  team_id varchar(32) NOT NULL
+) ENGINE=InnoDB;
+
+INSERT INTO tbl_users_team VALUES ('1','TEAM-UUID-01'),('2','TEAM-UUID-02');
+
+
+
+
+DROP TABLE IF EXISTS tbl_testplan;
+
+CREATE TABLE tbl_testplan (
+  id varchar(32) NOT NULL ,
+  name varchar(32) DEFAULT NULL ,
+  description varchar(128) DEFAULT 'No description',
+  lg_count int DEFAULT 1,
+  tags json DEFAULT NULL ,
+  jmeter_profile_id varchar(32) DEFAULT NULL ,
+  user_count  int DEFAULT 0,
+  scenario json DEFAULT NULL ,
+  duration varchar(32) DEFAULT 0,
+  team_id varchar(32) DEFAULT NULL ,
+  last_modified_by varchar(32) DEFAULT NULL ,
+  last_modified_on  DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB;
+
+#{ "testplan" : "sc01-baseline-test.jmx","testdata" :[ "file.csv","file2.csv"],"jars" :[ "file.jar","file2.jar"]}
+INSERT INTO tbl_testplan(id,name,last_modified_by,jmeter_profile_id,team_id) VALUES ('TP-UUID-0001','Project1:Baseline test','1','PROFILE-UUID-01','TEAM-UUID-01'),('TP-UUID-0002','Project2:Load test','1','PROFILE-UUID-01','TEAM-UUID-01'),('TP-UUID-0003','Project 3','1','PROFILE-UUID-02','TEAM-UUID-02');
+
+
+DROP TABLE IF EXISTS tbl_testcase;
+
+CREATE TABLE tbl_testcase (
+  id varchar(32) NOT NULL ,
+  name varchar(32) DEFAULT NULL ,
+  description varchar(128) DEFAULT 'No description',
+  tags varchar(128) DEFAULT NULL,
+  attachment BLOB DEFAULT NULL,
+  team_id varchar(32) DEFAULT NULL ,
+  last_modified_by varchar(32) DEFAULT NULL ,
+  last_modified_on  DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB;
+
+
+INSERT INTO tbl_testcase(id,name,tags,attachment,last_modified_by,last_modified_on,team_id) VALUES ('TC-UUID-0001','TC01','tc01','','1',now(),'TEAM-UUID-01'),('TC-UUID-0002','TC02','tc01','','1',now(),'TEAM-UUID-01'),('TC-UUID-0003','TC03','tc01','','1',now(),'TEAM-UUID-02');
+
+
+
+DROP TABLE IF EXISTS tbl_jmeter_profile;
+CREATE TABLE tbl_jmeter_profile (
+  id varchar(32) NOT NULL ,
+  name varchar(32) DEFAULT NULL ,
+  config TEXT DEFAULT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB;
+
+INSERT INTO tbl_jmeter_profile VALUES ('PROFILE-UUID-01','Default','{}');
+INSERT INTO tbl_jmeter_profile VALUES ('PROFILE-UUID-02','CRM','{}');
+
+
+
+
