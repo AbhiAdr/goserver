@@ -3,7 +3,7 @@ services:
   mjolnir:
     build:
       context: $GOPATH
-      dockerfile: ./src/go_mjolnir/docker/docker_mjolnir/Dockerfile
+      dockerfile: ./src/goserver/docker/docker_mjolnir/Dockerfile
     container_name: docker_mjolnir
     restart: always
     env_file: ./.env

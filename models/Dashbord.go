@@ -3,14 +3,14 @@ package models
 import (
 	"errors"
 	"fmt"
-	"go_mjolnir/structs"
+	"goserver/structs"
 )
 
 func Dashbord(id string) (structs.User, error) {
 
 	var data structs.User
 
-	stmt, err := db.Prepare("SELECT id, firstname, lastname, email, password, login_status FROM tbl_users where id= ?")
+	stmt, err := db.Prepare("SELECT id, fn, ln, email, password, login_status FROM users where id= ?")
 	checkErr(err)
 	defer stmt.Close()
 
@@ -40,7 +40,7 @@ func Users() (structs.Users, error) {
 	var user structs.User
 	var data structs.Users
 
-	rows, err := db.Query("SELECT id, firstname, lastname, email, login_status FROM tbl_users LIMIT 10")
+	rows, err := db.Query("SELECT id, fn, ln, email, login_status FROM users LIMIT 10")
 	checkErr(err)
 
 	for rows.Next() {

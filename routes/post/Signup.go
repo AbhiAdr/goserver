@@ -1,7 +1,7 @@
 package post
 
 import (
-	"go_mjolnir/handlers"
+	"goserver/handlers"
 )
 
 func Signup() Route {

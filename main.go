@@ -1,8 +1,8 @@
 package main
 
 import (
-	"go_mjolnir/handlers"
-	"go_mjolnir/models"
+	"goserver/handlers"
+	"goserver/models"
 	"log"
 	"net/http"
 )

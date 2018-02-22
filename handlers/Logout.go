@@ -3,7 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"go_mjolnir/models"
+	"goserver/models"
 	"net/http"
 )
 

@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"go_mjolnir/models"
-	// "go_mjolnir/structs"
+	"goserver/models"
+	// "goserver/structs"
 	//"reflect"
 	"testing"
 )

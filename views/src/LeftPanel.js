@@ -21,28 +21,10 @@ class LeftPanel extends React.Component {
 				<li className="list-group-item"><i className="glyphicon glyphicon-align-justify"></i> <b>SIDE PANEL</b></li>
 				<li className="list-group-item"><input type="text" className="form-control search-query" placeholder="Search Something"></input></li>
 				<li className="list-group-item">
-					<a href="javascript:void(0)"
-					   onClick={this.handlechngModule.bind(this)}
-					   className="c-admin" >
-					   <i className="glyphicon glyphicon-th-list"></i>C-Admin</a>
-				</li>
-				<li className="list-group-item">
 					<a href="javascript:void(0)" 
 					onClick={this.handlechngModule.bind(this)}
 					className="users" >
 					<i className="glyphicon glyphicon-th-list"></i>Users </a>
-				</li>
-				<li className="list-group-item">
-					<a href="javascript:void(0)" 
-					onClick={this.handlechngModule.bind(this)}
-					className="testplan" >
-					<i className="glyphicon glyphicon-th-list"></i>Testplan </a>
-				</li>
-				<li className="list-group-item">
-					<a href="javascript:void(0)" 
-					onClick={this.handlechngModule.bind(this)}
-					className="newtestplan" >
-					<i className="glyphicon glyphicon-th-list"></i>New Testplan </a>
 				</li>
 			</ul>
 		</div>

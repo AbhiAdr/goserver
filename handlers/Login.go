@@ -5,13 +5,12 @@ import (
 	"fmt"
 	"net/http"
 
-	"go_mjolnir/models"
-	"go_mjolnir/structs"
 	"golang.org/x/crypto/bcrypt"
+	"goserver/models"
+	"goserver/structs"
 )
 
 func Login_page(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("\n")
 	fmt.Println("Login -> Page, Checking for (login=true) dashbord ? login based on cookie value")
 	//	check if user is logged in or Not
 	if cookie, err := r.Cookie("id"); err == nil {
@@ -24,23 +23,12 @@ func Login_page(w http.ResponseWriter, r *http.Request) {
 			tpl.ExecuteTemplate(w, "index.html", d)
 		}
 	} else {
-		License()
-		fmt.Println("Login Page -> Cookie not Found not login")
-		if licenseExist == 0 {
-			fmt.Println("Login Page -> Cookie not Found  -> licence not found -> Dbconfig Page")
-			d := structs.Data{"Dbconfig"} //	Dbconfig Page
-			w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
-			w.Header().Set("Pragma", "no-cache")
-			w.Header().Set("Expires", "0")
-			tpl.ExecuteTemplate(w, "index.html", d)
-		} else {
-			fmt.Println("Login Page -> Cookie not Found -> licence found -> Login Page")
-			d := structs.Data{"Login"} //	Login Page
-			w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
-			w.Header().Set("Pragma", "no-cache")
-			w.Header().Set("Expires", "0")
-			tpl.ExecuteTemplate(w, "index.html", d)
-		}
+		fmt.Println("Login Page -> Cookie not Found -> licence found -> Login Page")
+		d := structs.Data{"Login"} //	Login Page
+		w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+		w.Header().Set("Pragma", "no-cache")
+		w.Header().Set("Expires", "0")
+		tpl.ExecuteTemplate(w, "index.html", d)
 	}
 }
 

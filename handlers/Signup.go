@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"go_mjolnir/models"
-	"go_mjolnir/structs"
+	"goserver/models"
+	"goserver/structs"
 )
 
 func Signup_page(w http.ResponseWriter, r *http.Request) {

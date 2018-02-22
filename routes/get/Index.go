@@ -1,7 +1,7 @@
 package get
 
 import (
-	"go_mjolnir/handlers"
+	"goserver/handlers"
 )
 
 func Index_page() Route {

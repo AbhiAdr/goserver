@@ -14,8 +14,8 @@ RUN mkdir -p "/go" "/go/bin" && chmod -R 777 "/go"
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 COPY ./bin/ /go/bin/
-COPY ./src/go_mjolnir/public /go/bin/public 
-COPY ./src/go_mjolnir/views /go/bin/views
-COPY ./src/go_mjolnir/docker/docker_mjolnir/init.sh /init.sh 
+COPY ./src/goserver/public /go/bin/public 
+COPY ./src/goserver/views /go/bin/views
+COPY ./src/goserver/docker/docker_mjolnir/init.sh /init.sh 
 WORKDIR $GOPATH
 CMD ["sh","/init.sh"]

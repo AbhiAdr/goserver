@@ -3,7 +3,7 @@ package models
 import (
 	"errors"
 	"fmt"
-	"go_mjolnir/structs"
+	"goserver/structs"
 )
 
 func Login_err() structs.Login_err {
@@ -14,7 +14,7 @@ func Login_err() structs.Login_err {
 
 func User_get_by_username(data structs.User) (structs.Login, error) {
 	var user structs.Login
-	stmt, err := db.Prepare("SELECT id, firstname, lastname, email, password, login_status FROM tbl_users where email= ?")
+	stmt, err := db.Prepare("SELECT id, fn, ln, email, password, login_status FROM users where email= ?")
 	checkErr(err)
 	defer stmt.Close()
 
@@ -44,7 +44,7 @@ func Login(email string) structs.Login {
 
 	var data structs.Login
 
-	stmt, err := db.Prepare("SELECT id, firstname, lastname, email, password, login_status FROM tbl_users where email= ?")
+	stmt, err := db.Prepare("SELECT id, firstname, lastname, email, password, login_status FROM users where email= ?")
 	checkErr(err)
 	defer stmt.Close()
 
@@ -70,7 +70,7 @@ func UpdateUserLoginStatus(data structs.User) {
 
 	data.Login_status = "1"
 
-	stmt, err := db.Prepare("UPDATE tbl_users SET login_status = ? WHERE id = ?")
+	stmt, err := db.Prepare("UPDATE users SET login_status = ? WHERE id = ?")
 	checkErr(err)
 
 	res, err := stmt.Exec(data.Login_status, data.Id)
