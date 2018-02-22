@@ -11,7 +11,7 @@ func main() {
 
 	router := NewRouter()
 	// Init Db , Secure Cookies and License
-	models.InitDB("devopsdb:6bCDn.nx@tcp(gomjolnir-dev.cepqlfnboyp8.us-west-2.rds.amazonaws.com:3306)/mjolnir_dev?charset=utf8")
+	models.InitDB("root:root@/project?charset=utf8")
 	handlers.SecureCookies()
 	// Set Static Files Path
 	js := http.StripPrefix("/js/", http.FileServer(http.Dir("./public/js/")))
